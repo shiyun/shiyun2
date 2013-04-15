@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="./css/game.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<!--[if lte IE 8]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<section class="cont">
+
+</section>
+<script>
+function init(){
+	var canvas = document.createElement("canvas");
+	canvas.height = 500;
+	canvas.width = 500;
+	canvas.className = 'hb';
+	document.querySelector('.cont').appendChild(canvas);
+
+	var context = canvas.getContext('2d');
+
+	var image = new Image();
+	image.onload = function(e){
+		e = e || event;
+		var loadImg = event.target;
+		var dx = 0, dy = 0;
+		context.drawImage(loadImg,dx,dy);		
+	}
+	image.src = './img/bg.png';
+}
+window.onload = init;
+</script>
+</body>
+</html>

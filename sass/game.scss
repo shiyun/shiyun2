@@ -1,0 +1,24 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/utilities/";
+
+/* common start */
+section,article,aside,header,footer,nav,dialog,figure,figcaption,hgroup,menu,canvas{display:block;}
+$wid:980px;
+$c0:#000;
+$c3:#333;
+$c6:#666;
+$c9:#999;
+$cf:#fff;
+@mixin c0 {color:$c0;}
+@mixin c3 {color:$c3;}
+@mixin c6 {color:$c6;}
+@mixin c9 {color:$c9;}
+@mixin cf {color:$cf;}
+@mixin mau($value:0,$value2:0) {margin:$value auto $value2;}
+@mixin bo($bwid:1px,$color:#999){border:$bwid solid $color;}
+/* common end */
+
+body {background-color:#B9E6EB;}
+.cont {@include mau(10px,30px);width:$wid;min-height:800px;_height:800px;}
+.hb {@include mau(30px,30px);@include bo;background-color:$cf}
