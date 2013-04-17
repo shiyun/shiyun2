@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <link href="./css/game.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <!--[if lte IE 8]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -13,7 +14,55 @@
 </section>
 
 <script>
+var imgCache = null;//, context = null;
+
+var imgss = [{id: "player",src: "./img/player.png"},{id: "bg",src: "./img/bg.png"}];
+
+function loadImage(srcList,callback){
+	var imgs={};
+	var totalCount=srcList.length;
+	var loadedCount=0;
+	for (var i=0;i<totalCount;i++){
+		var img=srcList[i];
+		var image=imgs[img.id]=new Image();		
+		image.src=img.src;
+		//alert(image.src);
+		image.onload=function(event){
+			loadedCount++;
+		}		
+	}
+		var Me=this;
+
+	if (typeof callback=="function"){
+		function check(){
+			if (loadedCount>=totalCount){
+				callback.apply(Me,arguments);
+			}else{		
+				setTimeout(check,100);
+			}	
+		}
+		check();
+	}
+	return imgs;
+}
+
+
+function drawDemo(){
+	context.drawImage(imgCache['bg'],0,0);
+	context.drawImage(imgCache['player'],0,60,50,60,400,284,50,60);
+}
+
 function init(){
+	var canvas = document.createElement('canvas');
+	canvas.height = 400;
+	canvas.width = 600;
+	canvas.className = 'hb';
+	document.querySelector('.cont').appendChild(canvas);
+
+	context = canvas.getContext('2d');
+	imgCache = loadImage(imgss,drawDemo);
+
+	/*
 	var canvas = document.createElement("canvas");
 	canvas.height = 400;
 	canvas.width = 600;
@@ -41,6 +90,7 @@ function init(){
 		context.drawImage(loadImg, sx, sy, sw, sh, dx, dy, dw, dh )
 	}
 	img.src = './img/player.png';
+	*/
 }
 window.onload = init;
 </script>
