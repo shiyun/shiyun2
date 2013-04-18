@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="./css/game.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<!--[if lte IE 8]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<section class="cont">
+
+</section>
+
+<script>
+var canvas = null,
+	context = null,
+	imgCache = null,
+	imgs = [{id:'bg',src:'./img/bg.png'},{id:'player',src:'./img/player.png'},{id:'enemy',src:'./img/enemy.png'}];
+
+function init(){
+	var canvas = document.createElement('canvas');
+	canvas.height = 400;
+	canvas.width = 600;
+	canvas.className = 'hb';
+	document.querySelector('.cont').appendChild(canvas);
+	
+	context = canvas.getContext('2d');
+
+	imgCache = loadImg(imgs,drawDemo);
+}
+
+function loadImg(imgList,callback){
+	var imgs = {},
+		cn = 0,
+		an = imgList.length;
+	for (var i=0; i<an; i++){
+		var nubImg = imgList[i];
+		//var image = imgs[nubImg.id] = new Image;
+		imgs[nubImg.id] = new Image;
+		var image = imgs[nubImg.id];
+		console.log(image);
+		image.onload = function(){
+			cn++;
+		}
+		image.src = nubImg.src;
+		var that = this;
+		if (typeof callback == 'function')
+		{
+			function check(){
+				if (cn >= an)
+				{
+					drawDemo();//callback.apply(that,arguments);
+				}else{
+					setTimeout(check,100);
+				}
+			}
+			check();
+		}
+	}
+	return imgs;
+}
+
+function drawDemo(){
+	context.drawImage(imgCache['bg'],0,0);
+	context.drawImage(imgCache['player'],0,60,50,60,400,284,50,60);
+	context.drawImage(imgCache['enemy'],0,0,50,50,100,294,50,50);
+}
+
+window.onload = init;
+</script>
+</body>
+</html>

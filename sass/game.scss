@@ -4,6 +4,8 @@
 
 /* common start */
 section,article,aside,header,footer,nav,dialog,figure,figcaption,hgroup,menu,canvas{display:block;}
+$left:left;
+$right:right;
 $wid:980px;
 $c0:#000;
 $c3:#333;
@@ -22,3 +24,6 @@ $cf:#fff;
 body {background-color:#B9E6EB;}
 .cont {@include mau(10px,30px);width:$wid;min-height:800px;_height:800px;}
 .hb {@include mau(30px,30px);@include bo;background-color:$cf}
+.fl {float:$left;}
+.fr {float:$right;}
+.mr10 {margin-right:10px;}

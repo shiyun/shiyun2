@@ -70,12 +70,12 @@ section, article, aside, header, footer, nav, dialog, figure, figcaption, hgroup
 }
 
 /* common end */
-/* line 22, ../sass/game.scss */
+/* line 24, ../sass/game.scss */
 body {
   background-color: #B9E6EB;
 }
 
-/* line 23, ../sass/game.scss */
+/* line 25, ../sass/game.scss */
 .cont {
   margin: 10px auto 30px;
   width: 980px;
@@ -83,9 +83,24 @@ body {
   _height: 800px;
 }
 
-/* line 24, ../sass/game.scss */
+/* line 26, ../sass/game.scss */
 .hb {
   margin: 30px auto 30px;
   border: 1px solid #999999;
   background-color: white;
+}
+
+/* line 27, ../sass/game.scss */
+.fl {
+  float: left;
+}
+
+/* line 28, ../sass/game.scss */
+.fr {
+  float: right;
+}
+
+/* line 29, ../sass/game.scss */
+.mr10 {
+  margin-right: 10px;
 }
