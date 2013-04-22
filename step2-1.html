@@ -23,9 +23,11 @@ canvas {
 
 </head> 
 <body onload="init()"> 
-<button id="btn" class="mr10">dsdsd</button>
-<button id="btn2">dsdsd</button>
+<button id="btn" class="mr10">暂停</button>
+<button id="btn2">继续</button>
+<section class="cont">
 
+</section>
 </body>
 <script type="text/javascript">
 
@@ -57,9 +59,7 @@ function loadImage(srcList,callback){
 }
 
 //定义全局对象
-var ImgCache=null;
-var canvas=null;
-var context=null;
+var ImgCache=null,canvas=null,context=null,flag = true;
 
 // 页面初始化函数
 function init(){
@@ -77,10 +77,10 @@ function init(){
 	// 加载完成后,调用startDemo
 	ImgCache=loadImage( [ 
 			{ 	id : "player",
-				url : "../res/player.png"
+				url : "./img/player.png"
 			},
 			{ 	id : "bg",
-				url : "../res/bg.png"
+				url : "./img/bg.png"
 			}
 		], 
 		startDemo );
@@ -102,8 +102,8 @@ function startDemo(){
 	//x/y坐标的最大值和最小值, 可用来限定移动范围.
 	var minX=0, maxX=500, minY=0, maxY=284;
 	
-	//主循环
-	var mainLoop=setInterval(function(){
+	//主循环	
+	mainLoop=setInterval(function(){
 		//距上一次执行相隔的时间.(时间变化量), 目前可近似看作sleep.
 		var deltaTime=sleep;
 		
@@ -125,19 +125,29 @@ function startDemo(){
 		var sx=0, sy=60, sw=50, sh=60;
 		context.drawImage(img, sx, sy, sw, sh, Math.floor(x), Math.floor(y), sw, sh );	
 		
-	},sleep);
-	clearDemo(mainLoop);
+	},sleep);		
+}
+var btn = document.getElementById('btn');
+btn.addEventListener('click',ldimg,false);
+function ldimg(){
+	var d = document.createElement('canvas');
+		d.height = 400;
+		d.width = 600;
+		d.className = 'hd';
+	document.querySelector('.cont').appendChild(d);
 
+	var c = d.getContext('2d');
+	
+	draw('./img/bg.png',c,0,0);
+	draw('./img/player.png',c,0,0,50,60,0,0,50,60);
 }
 
-function clearDemo(evName){
-	var btnStop = document.getElementById('btn');
-	btnStop.addEventListener("click",function(){clearInterval(evName)},false);
-}
-
-function startDemo(fnName,time){
-	var btnStart = document.getElementById('btn2');
-	btnStart.addEventListener("click",function(){setInterval(fnName,time);},false);
+function draw(src,obj,sx,sy,sw,sh,ox,oy,ow,oh){
+	var i = new Image;
+	i.onload = function(){
+		sw === undefined ? obj.drawImage(i,sx,sy) : obj.drawImage(i,sx,sy,sw,sh,ox,oy,ow,oh);
+	}
+	i.src = src;
 }
 	
 </script>
