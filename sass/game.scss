@@ -26,4 +26,8 @@ body {background-color:#B9E6EB;}
 .hb {@include mau(30px,30px);@include bo;background-color:$cf}
 .fl {float:$left;}
 .fr {float:$right;}
+.tc {text-align:center;}
+.mau {margin-left:auto;margin-right:auto;}
+.mt10 {margin-top:10px;}
 .mr10 {margin-right:10px;}
+.mlr10 {margin-left:10px;margin-right:10px;}

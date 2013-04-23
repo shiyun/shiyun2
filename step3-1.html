@@ -40,7 +40,7 @@ function ldimg(){
 	document.querySelector('.cont').appendChild(d);
 
 	var c = d.getContext('2d');
-	
+
 	var FPS = 30,
 		sleep = Math.floor(1000/FPS),
 		x = 0,
@@ -61,7 +61,7 @@ function ldimg(){
 		x = Math.max(minX,Math.min(x,maxX));
 		y = Math.max(minY,Math.min(y,maxY));
 		
-		c.clearRect(0,0,600,400);
+		//c.clearRect(0,0,600,400);
 		draw('./img/bg.png',c,0,0);
 		draw('./img/player.png',c,0,0,50,60,x,y,50,60);		
 	}
