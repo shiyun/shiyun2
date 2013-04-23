@@ -138,8 +138,29 @@ function ldimg(){
 
 	var c = d.getContext('2d');
 	
-	draw('./img/bg.png',c,0,0);
-	draw('./img/player.png',c,0,0,50,60,0,0,50,60);
+	var FPS = 30,
+		sleep = Math.floor(1000/FPS),
+		x = 0,
+		y = 284,
+		speedX = 65/1000,
+		speedY = -45/1000,
+		minX = 0,
+		maxX = 500,
+		minY = 0,
+		maxY = 284;
+	
+	var moveLoop = setInterval(function(){
+		var jiangeTime = sleep;
+
+		x += speedX * jiangeTime;
+		y += speedY * jiangeTime;
+		
+		x = Math.max(minX,Math.min(x,maxX));
+		y = Math.max(minY,Math.min(y,maxY));
+
+		draw('./img/bg.png',c,0,0);
+		draw('./img/player.png',c,0,0,50,60,x,y,50,60);
+	},sleep);	
 }
 
 function draw(src,obj,sx,sy,sw,sh,ox,oy,ow,oh){
