@@ -16,59 +16,84 @@
 </head>
  
 <body> 
-<p class="tc mt10"><button id="btnBegin" class="tc">点击开始动画</button></p>
+<p class="tc mt10 hidden"><button id="btnBegin" class="tc">点击开始动画</button></p>
 <section class="cont">
 
 </section>
 </body>
-<script type="text/javascript">
-function draw(src,obj,sx,sy,sw,sh,ox,oy,ow,oh){
-	var i = new Image;
-	i.onload = function(){
-		sw === undefined ? obj.drawImage(i,sx,sy) : obj.drawImage(i,sx,sy,sw,sh,ox,oy,ow,oh);
-	}
-	i.src = src;
+
+<script>
+
+var context = null,
+	ImgCache = null,
+	canvas = null;
+
+function init(){
+	canvas = document.createElement('canvas');
+	canvas.height = 400;
+	canvas.width = 600;
+	canvas.className = 'hb';
+	document.querySelector('.cont').appendChild(canvas);
+
+	context = canvas.getContext('2d');
+
+	ImgCache=loadImage( [ 
+			{ 	id : "player",
+				url : "./img/player.png"
+			},
+			{ 	id : "bg",
+				url : "./img/bg.png"
+			}
+		], 
+		startDemo );
+
+
 }
 
-var btnBegin = document.getElementById('btnBegin');
+function startDemo(){
 
-function ldimg(){
-	var d = document.createElement('canvas');
-		d.height = 400;
-		d.width = 600;
-		d.className = 'hb';
-	document.querySelector('.cont').appendChild(d);
 
-	var c = d.getContext('2d');
+}
 
-	var FPS = 30,
-		sleep = Math.floor(1000/FPS),
-		x = 0,
-		y = 284,
-		speedX = 65/1000,
-		speedY = -45/1000,
-		minX = 0,
-		maxX = 500,
-		minY = 0,
-		maxY = 284;
+function loadImage(srcList,callback){
+	var imgs = {},
+		allNum = srcList.length,
+		curNum = 0;
 	
-	function loopDemo(){
-		var jiangeTime = sleep;
-
-		x += speedX * jiangeTime;
-		y += speedY * jiangeTime;
+	for (var i=0; i<allNum; i++){
+		var img = srcList[i]
+		var image = imgs[img.id] = new Image;
+		image.onload = function(){
+			curNum++;	
+		}
+		image.src = img.url;
 		
-		x = Math.max(minX,Math.min(x,maxX));
-		y = Math.max(minY,Math.min(y,maxY));
-		
-		//c.clearRect(0,0,600,400);
-		draw('./img/bg.png',c,0,0);
-		draw('./img/player.png',c,0,0,50,60,x,y,50,60);		
+		if (typeof callback == 'function'){
+			var Me = this;
+			function check(){
+				if (curNum >= allNum){
+					callback.apply(Me,arguments);
+				}else{
+					setTimeout(check,100);
+				}
+			}
+			check();
+		}
 	}
-
-	setInterval(loopDemo,sleep);
+	return imgs;
 }
 
-btnBegin.addEventListener('click',ldimg,false);	
+function Animation(cfg){
+	for (var att in cfg ){
+		this[att] = cfg[att];
+	}
+}
+
+Animation.prototype = {
+	constructor: Animation,
+	frames: null 
+}
+
+window.onload = init;
 </script>
 </html>
