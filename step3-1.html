@@ -51,7 +51,25 @@ function init(){
 }
 
 function startDemo(){
+	var FPS = 30;
+	var sleep = Math.floor(1000/FPS);
+	var x = 0, y = 284;
 
+	var animation = new Animation({
+		img: "player",
+		frames: [{x:0, y:0, w:50, h:60, duration:100},{x:50, y:0, w:50, h:60, duration:100},{x:100, y:0, w:50, h:60, duration:100}]
+	});
+
+	animation.init();
+
+	var mainLoop = setInterval(function(){
+		var deltaTime = sleep;
+		animation.update(deltaTime);
+
+		context.drawImage(ImgCache['bg'],0,0);
+
+		animation.draw(context,x,y);
+	},sleep);
 
 }
 
@@ -91,7 +109,43 @@ function Animation(cfg){
 
 Animation.prototype = {
 	constructor: Animation,
-	frames: null 
+	frames: null,
+	frameCount: -1,
+	img: null,
+	currentFrame: null,
+	currentFrameIndex: -1,
+	currentFramePlayed: -1,
+
+	init: function(){
+		this.img = ImgCache[this.img] || this.img;
+		this.frames = this.frames || [];
+		this.frameCount = this.frames.length;
+		this.currentFrameIndex = 0;
+		this.currentFrame = this.frames[this.currentFrameIndex];
+		this.currentFramePlayed = 0;
+
+	},
+
+	update: function(deltaTime){
+		//判断当前Frame是否播放完成
+		if (this.currentFramePlayed >= this.currentFrame.duration){
+			//播放下一帧
+			if (this.currentFrameIndex >= this.frameCount-1){
+				this.currentFrameIndex = 0;
+			}else{
+				this.currentFrameIndex++;
+			}
+			this.currentFrame = this.frames[this.currentFrameIndex];
+			this.currentFramePlayed = 0;
+		}else{
+			this.currentFramePlayed += deltaTime;
+		}	
+	},
+
+	draw: function(gc,x,y){
+		var f = this.currentFrame;
+		gc.drawImage(this.img, f.x, f.y, f.w, f.h, x, y, f.w, f.h);
+	}
 }
 
 window.onload = init;
