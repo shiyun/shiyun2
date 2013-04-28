@@ -16,7 +16,7 @@
 </head>
  
 <body> 
-<p class="tc mt10 hidden"><button id="btnBegin" class="tc">点击开始动画</button></p>
+<p class="tc mt10 "><button id="btnBegin" class="tc">点击开始动画</button></p>
 <section class="cont">
 
 </section>
@@ -56,32 +56,44 @@ function loadImage(srcList,callback){
 }
 
 function startDemo(){
-	var FPS = 30,
-		sleep = Math.floor(1000/FPS),
-		img = imgCache['player'];
 	
-	var x = 0,
-		y = 284,
-		speedX = 65/1000,
-		speedY = -45/1000,
-		minX = 0,
-		maxX = 500,
-		minY = 0,
-		maxY = 284;
+	// 一些简单的初始化, 
+	var FPS=30;
+	var sleep=Math.floor(1000/FPS);
+	
+	//初始坐标
+	var x=0, y=284;
+	
+	// 创建一个Animation对象
+	var animation = new Animation({
+		img : "player" ,
+		//该动画由3帧构成,对应图片中的第一行.
+		frames : [
+			{x : 0, y : 0, w : 50, h : 60, duration : 100},
+			{x : 50, y : 0, w : 50, h : 60, duration : 100},
+			{x : 100, y : 0, w : 50, h : 60, duration : 100}
+		]
+	} );
+	// 初始化Animation
+	animation.init();
+	
+	//主循环
+	var mainLoop=setInterval(function(){
 
-	var mainLoop = setInterval(function(){
-		var deltaTime = sleep;
+		//距上一次执行相隔的时间.(时间变化量), 目前可近似看作sleep.
+		var deltaTime=sleep;
 		
-		x += speedX * deltaTime;
-		y += speedY * deltaTime;
-
-		x=Math.max(minX,Math.min(x,maxX));
-		y=Math.max(minY,Math.min(y,maxY));
-
-		context.clearRect(0,0,canvas.width,canvas.height);
-		context.drawImage(imgCache['bg'],0,0);
-		context.drawImage(img,0,0,50,60,Math.floor(x),Math.floor(y),50,60);
+		// 更新Animation状态
+		animation.update(deltaTime);
+	
+		//使用背景覆盖的方式 清空之前绘制的图片
+		context.drawImage(imgCache["bg"],0,0);
+				
+		//绘制Animation
+		animation.draw(context, x,y);
+		
 	},sleep);
+
 }
 
 function Animation(cfg){
@@ -102,8 +114,29 @@ Animation.prototype = {
 	init: function(){
 		this.img = imgCache[this.img] || this.img;
 		this.frames = this.frames || [];
+		this.frameCount = this.frames.length;
+		this.currentFrameIndex = 0;
+		this.currentFrame = this.frames[this.currentFrameIndex];
+		this.currentFramePlayed = 0;
+	},
 
+	update: function(deltaTime){
+		if (this.currentFramePlayed >= this.currentFrame.duration){
+			if (this.currentFrameIndex >= this.frameCount-1){
+				this.currentFrameIndex = 0;
+			}else{
+				this.currentFrameIndex++;
+			}
+			this.currentFrame = this.frames[this.currentFrameIndex];
+			this.currentFramePlayed = 0;
+		}else{
+			this.currentFramePlayed += deltaTime;
+		}
+	},
 
+	draw: function(gc,x,y){
+		var f = this.currentFrame;
+		gc.drawImage(this.img,f.x,f.y,f.w,f.h,x,y,f.w,f.h);
 	}
 }
 
