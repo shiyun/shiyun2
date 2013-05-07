@@ -23,12 +23,17 @@ $cf:#fff;
 
 body {background-color:#B9E6EB;}
 .cont {@include mau(10px,30px);width:$wid;min-height:800px;_height:800px;}
-.hb {@include mau(30px,30px);@include bo;background-color:$cf}
+.clearfix:after {content:'\200B';height:0;display:block;clear:both;}
+.clearfix{*zoom:1;}
 .fl {float:$left;}
 .fr {float:$right;}
 .tc {text-align:center;}
 .mau {margin-left:auto;margin-right:auto;}
 .mt10 {margin-top:10px;}
+.mt30 {margin-top:30px;}
 .mr10 {margin-right:10px;}
 .mlr10 {margin-left:10px;margin-right:10px;}
 .hidden {display:none;}
+.pr {position:relative;}
+
+.hb {@include mau(30px,30px);@include bo;background-color:$cf}
